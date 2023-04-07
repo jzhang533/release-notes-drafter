@@ -287,7 +287,9 @@ def to_markdown(commit_list: CommitList, category):
 def get_markdown_header(category):
     header = f"""
 # Release Notes worksheet {category}
-update instructions for working with this worksheet
+- polish PR title to make it human read friendly.
+- edit, delete, merge multiple PRs.
+- summarize notes for this category.
 """
 
     return [
