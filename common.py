@@ -196,7 +196,7 @@ def github_data(pr_number):
     nodes = query['data']['repository']['pullRequest']['reviews']['nodes']
 
     # using set to dedup multiple accepts from same accepter
-    accepters = {node["author"]["login"] for node in nodes}
+    accepters = {node["author"]["login"] for node in nodes if node and node["author"]}
     accepters = tuple(sorted(accepters))
 
     return labels, author, accepters
