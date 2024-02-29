@@ -49,7 +49,6 @@ with open(REPO_NAME_LIST_FILE, "r") as f:
 
 # for debug purpose
 # repos=['Paddle', 'PaddleNLP', 'PaddleScience', 'PaddleOCR', 'docs']
-repos=['PaddleMix']
 print(repos, file=sys.stderr)
 
 repo_all_issue_count={}
