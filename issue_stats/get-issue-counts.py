@@ -15,6 +15,7 @@ LABLES_TO_IGNORE=[
         'HappyOpenSource Pro',
         'HappyOpenSource',
         'PaddlePaddle Hackathon',
+        'Announcement',
         ]
 # controls how many to display in the final matrix
 COLUMNS=5
@@ -48,7 +49,7 @@ with open(REPO_NAME_LIST_FILE, "r") as f:
     repos = f.read().rstrip().split("\n")
 
 # for debug purpose
-# repos=['Paddle', 'PaddleNLP', 'PaddleScience', 'PaddleOCR', 'docs']
+#repos=['Paddle', 'PaddleNLP', 'PaddleScience', 'PaddleOCR', 'docs']
 print(repos, file=sys.stderr)
 
 repo_all_issue_count={}
@@ -80,6 +81,8 @@ sorted_repos = list(dict(sorted(repo_all_issue_count.items(), key=lambda x: x[1]
 print(f"- issues since: {SINCEDATE}")
 today = datetime.today().strftime('%Y-%m-%d')
 print(f"- executed at: {today}")
+print(f"- issues ignored with labels: {'; '.join(LABLES_TO_IGNORE)}")
+
 for row in range(ROWS):
     start = row * COLUMNS
     end = start + COLUMNS
@@ -87,5 +90,13 @@ for row in range(ROWS):
     repo_with_links = map(lambda x:f"[{x}](https://github.com/PaddlePaddle/{x}/issues?q=is%3Aissue+created%3A%3E%3D{SINCEDATE})", sorted_repos[start:end])
     print('| ' + ' | '.join(repo_with_links) + ' |')
     if row == 0: print('| ---- ' * COLUMNS + '|')
-    issue_counts = map(lambda x:f"{repo_closed_issue_count[x]}/{repo_all_issue_count[x]}", sorted_repos[start:end])
+    def fmt_cell(x):
+        c = repo_closed_issue_count[x]
+        a = repo_all_issue_count[x]
+        r = 0.
+        if a > 0: r = c/a * 100.
+
+        return "{}/{}({:.2f}%)".format(c, a, r)
+
+    issue_counts = map(fmt_cell, sorted_repos[start:end])
     print('| ' + ' | '.join(issue_counts) + ' |')
